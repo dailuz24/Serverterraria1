@@ -1,0 +1,29 @@
+name: Deploy Terraria Server
+
+on:
+  push:
+    branches:
+      - main  # o la rama que prefieras
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Run Terraria Server
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wine
+        sudo apt-get install -y xvfb
+        sudo Xvfb :0 -screen 0 1024x768x16 &
+        export DISPLAY=:0
+        python start_server.py
